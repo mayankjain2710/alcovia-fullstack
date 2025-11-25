@@ -43,3 +43,6 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+server/.env
+.env
