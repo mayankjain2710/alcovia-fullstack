@@ -1,0 +1,63 @@
+{
+  "name": "mentor Approval Stage 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "task-submit",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9212484d-ab0d-41d6-be6c-70fa05ee842a",
+      "name": "Webhook",
+      "webhookId": "1c6249ad-ac78-4df0-b824-70f0ba1d9e72"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/assign-intervention",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"student_id\": \"{{ $json.body.student_id }}\",\n  \"task\": \"{{ $json.body.task }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "81b3946d-5953-4bab-9454-c45c20395d38",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ccf4a896-f138-4094-a432-cef0acc5908b",
+  "meta": {
+    "instanceId": "d4385523fa1ed86929309e9040be6be37e7fa68b2f3641602cb5d74d1d838076"
+  },
+  "id": "xmWj1MC78JyXX8Rd",
+  "tags": []
+}

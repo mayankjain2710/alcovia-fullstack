@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import studentRoutes from "./routes/studentRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 

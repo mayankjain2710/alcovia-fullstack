@@ -1,0 +1,73 @@
+{
+  "name": "Daily-Fail Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-fail",
+        "responseMode": "=onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -192,
+        -32
+      ],
+      "id": "5ce72732-f296-4dab-9b8a-cc3808fe15fd",
+      "name": "Receive Failure",
+      "webhookId": "741d25be-4d98-4e2e-b104-690d1e81ce82"
+    },
+    {
+      "parameters": {
+        "fromEmail": "Alcovia@gmail.com",
+        "toEmail": "mayankmaster2004@gmail.com",
+        "subject": "=Student Needs Intervention (ID: {{ $json.body.student_id }})",
+        "html": "=A student failed today's check-in.\n\nStudent ID: {{ $json.body.student_id }}\nQuiz Score: {{ $json.body.quiz_score }}\nFocus Minutes: {{ $json.body.focus_minutes }}\n\nClick link to assign remedial task:\nhttp://localhost:5678/webhook/mentor-approve?student_id={{ $json.body.student_id }}\n",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "388db0ed-805c-400e-9cea-4fcd594ac098",
+      "name": "Send email",
+      "webhookId": "aca0c81b-d5c6-4de6-aedc-4a7c8a6feea9",
+      "credentials": {
+        "smtp": {
+          "id": "8UADUCJU9MGkAb1a",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive Failure": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bfd67111-5bdd-40b6-bbf6-919665ad6e1c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d4385523fa1ed86929309e9040be6be37e7fa68b2f3641602cb5d74d1d838076"
+  },
+  "id": "SNQBWROWnwoZwFGO",
+  "tags": []
+}

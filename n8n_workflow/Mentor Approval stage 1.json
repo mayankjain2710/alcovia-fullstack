@@ -1,0 +1,60 @@
+{
+  "name": "Mentor Approval stage 1",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "mentor-approve",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -352,
+        -224
+      ],
+      "id": "37f7c277-98dd-477e-b6e5-8beda53b1583",
+      "name": "Webhook",
+      "webhookId": "f3694d69-873d-4e24-95b3-51a3e7ed4d4b"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html>\n  <body>\n    <h2>Assign Custom Task</h2>\n\n    <form action=\"http://localhost:5678/webhook/task-submit\" method=\"POST\">\n      <input type=\"hidden\" name=\"student_id\" value=\"{{$json[\"query\"][\"student_id\"]}}\">\n\n      <label>Enter Task:</label><br>\n      <textarea name=\"task\" rows=\"3\" cols=\"40\" required></textarea><br><br>\n\n      <button type=\"submit\">Assign Task</button>\n    </form>\n  </body>\n</html>\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        -224
+      ],
+      "id": "882340d1-e30e-4ceb-bd6c-51a71751b2a0",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "84e5b550-5f72-4474-b3ff-96f8bd8cded5",
+  "meta": {
+    "instanceId": "d4385523fa1ed86929309e9040be6be37e7fa68b2f3641602cb5d74d1d838076"
+  },
+  "id": "TVwhRH4QeRkaSJR5",
+  "tags": []
+}

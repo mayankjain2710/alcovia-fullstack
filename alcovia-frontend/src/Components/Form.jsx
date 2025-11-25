@@ -1,24 +1,21 @@
 import { set } from "mongoose";
 import React, { useEffect, useState } from "react";
 
-// Replace with your backend base URL
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:8080";
 
 export default function Form() {
   const [studentId, setStudentId] = useState(
     localStorage.getItem("studentId") || null
   );
 
-  // states: need Intervention | onTrack | remedial
   const [state, setState] = useState("loading");
   const [remedialTask, setRemedialTask] = useState("");
 
   const [focusTime, setFocusTime] = useState("");
   const [quizScore, setQuizScore] = useState("");
 
-  // -----------------------------------------
+
   // Fetch student state from backend
-  // -----------------------------------------
   async function fetchStudentState() {
     try {
       const res = await fetch(
@@ -28,17 +25,14 @@ export default function Form() {
 
       console.log("Fetched Status:", data);
 
-      // if backend created a new student, update studentId
       if (studentId === null && data.student_id) {
         setStudentId(data.student_id);
         localStorage.setItem("studentId", data.student_id);
         return;
       }
 
-      // set state regardless
       setState(data.status);
 
-      // when remedial → fetch latest task using backend student_id
       if (data.status === "Remedial") {
         const taskRes = await fetch(
           `${BASE_URL}/api/student-latest-task/${data.student_id}`
@@ -53,7 +47,6 @@ export default function Form() {
 
   useEffect(() => {
     function handleVisibilityChange() {
-      // ❌ Do NOT detect cheating if already locked or under review
       if (
         state === "locked" ||
         state === "Needs Intervention" ||
@@ -62,7 +55,6 @@ export default function Form() {
         return;
       }
 
-      // ✔ Only detect cheating during normal working time
       if (document.hidden) {
         reportCheating();
       }
@@ -73,25 +65,21 @@ export default function Form() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [state]); // <-- important: depends on current state
+  }, [state]);
 
-  // -----------------------------------------
   // Load state on page load + poll every 4 sec
-  // -----------------------------------------
   useEffect(() => {
     // First fetch
     fetchStudentState();
 
-    // ❗ Only start polling AFTER studentId exists
     if (studentId !== null) {
       const interval = setInterval(fetchStudentState, 4000);
       return () => clearInterval(interval);
     }
   }, [studentId]);
 
-  // -----------------------------------------
+
   // Submit daily check-in
-  // -----------------------------------------
   async function handleSubmit() {
     if (!focusTime || !quizScore) {
       alert("Please enter focus time and quiz score.");
@@ -114,15 +102,13 @@ export default function Form() {
     console.log("Submission Response:", data);
 
     if (data.status === "Pending Mentor Review") {
-      setState("locked"); // immediate lock
+      setState("locked"); 
       return;
     }
 
-    // If On Track
     if (data.status === "On Track") {
       alert("Your progress is good!");
 
-      // RESET INPUTS
       setFocusTime("");
       setQuizScore("");
 
@@ -130,9 +116,7 @@ export default function Form() {
     }
   }
 
-  // -----------------------------------------
   // Mark remedial complete → back to normal
-  // -----------------------------------------
   async function handleComplete() {
     fetch(`${BASE_URL}/api/student/${studentId}/complete-remedial`, {
       method: "POST",
@@ -152,7 +136,6 @@ export default function Form() {
         body: JSON.stringify({ student_id: studentId }),
       });
 
-      // Immediately lock screen
       setState("locked");
       alert("Cheating detected! The mentor will review your activity.");
     } catch (err) {
@@ -160,9 +143,8 @@ export default function Form() {
     }
   }
 
-  // -----------------------------------------
+
   // UI
-  // -----------------------------------------
   if (state === "loading") {
     return <p>Loading...</p>;
   }
