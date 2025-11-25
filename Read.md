@@ -227,8 +227,6 @@ Your 5-minute walkthrough must show:
 ## 📦 Submission Deliverables
 
 - ✔ Public GitHub Repository
-- ✔ Frontend live demo (Vercel or Netlify)
-- ✔ Backend live demo (Render/Railway) *(optional)*
 - ✔ n8n Workflows JSON
 - ✔ Loom Demo Video
 
