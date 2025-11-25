@@ -1,0 +1,12 @@
+{
+  "name": "alcovia-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "alcovia-backend"
+  ],
+  "scripts": {
+    "start": "npm --prefix alcovia-backend start",
+    "install": "npm --prefix alcovia-backend install"
+  }
+}
